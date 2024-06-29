@@ -1,11 +1,12 @@
 import argparse
-from sys import platform, path
-from ipaddress import ip_address
+from sys import platform
+from ipaddress import ip_address, IPv4Address, IPv6Address
 from pathlib import Path
 from enum import Enum
 from json import dumps, loads
 from dataclasses import dataclass, asdict, field
 from datetime import datetime
+from typing import Union
 
 from .appconfig import HEADER, END, FORWARD_TEMPLATE
 
@@ -19,6 +20,20 @@ class Protocols(str, Enum):
 @dataclass
 class Metadata:
     name: str
+    source_port: int
+    destination_port: int
+    destination_ip: Union[IPv4Address, IPv6Address]
+    protocol: Protocols
+    create_at: datetime = field(default_factory=lambda: datetime.now())
+
+
+@dataclass
+class JsonableMetadata:
+    name: str
+    source_port: int
+    destination_port: int
+    destination_ip: str
+    protocol: Protocols
     create_at: str = field(default_factory=lambda: datetime.now().isoformat())
 
 
@@ -30,7 +45,10 @@ def generate_iptables_rules(_args: argparse.Namespace) -> str:
         destination_ip=_args.destination_ip,
     )
 
-    metadata = Metadata(name=_args.name)
+    metadata = JsonableMetadata(
+        name=_args.name, source_port=_args.source_port,
+        destination_port=_args.destination_port, destination_ip=str(_args.destination_ip), protocol=_args.protocol
+    )
     return HEADER.format(json_string=dumps(asdict(metadata))) + _rules + END
 
 
@@ -57,9 +75,9 @@ if __name__ == '__main__':
 
     parser = ArgumentParser(
         prog='openwrt-iptables-forward-adder',
-        description='The tools for adding iptables IP forwarding rules on Openwrt / Openwrt 添加 iptables IP 转发的小工具',
+        description='Openwrt 添加 iptables IP 转发的小工具 / The tools for adding iptables IP forwarding rules on Openwrt',
         epilog='版权信息 / Copyright: Lovemilk (zhuhansan666@github), BSD 3-Clause License\n'
-               'https://github.com/zhuhansan666/',
+               'https://github.com/zhuhansan666/openwrt-iptables-forward-adder',
     )
 
     parser.add_argument(
