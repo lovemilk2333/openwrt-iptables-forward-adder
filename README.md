@@ -2,6 +2,17 @@
 > Openwrt 添加 iptables IP 转发的小工具
 
 ## 使用方法
+### 拉取项目
+使用 `git clone` 将本项目拉取到本地
+```shell
+git clone https://github.com/zhuhansan666/openwrt-iptables-forward-adder.git 
+```
+
+### 更换工作目录
+```shell
+cd ./openwrt-iptables-forward-adder
+```
+
 ###  添加转发规则
 ```shell
 python -m openwrt_iptables_forward_adder.adder -s <外部端口> -d <内部端口> -i <内部IP> -p <转发协议> -n <转发名称 (仅供阅读)>
