@@ -26,7 +26,7 @@ def generate_iptables_rules(_args: argparse.Namespace) -> str:
 
 def write_iptables_rules(_rules: str, iptables_file: Path):
     try:
-        with iptables_file.open('w', encoding='u8') as fp:
+        with iptables_file.open('a', encoding='u8') as fp:
             fp.write('\n')
             fp.write(_rules)
             fp.write('\n')
