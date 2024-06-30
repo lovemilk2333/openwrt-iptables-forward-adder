@@ -19,7 +19,7 @@ def generate_iptables_rules(_args: argparse.Namespace) -> str:
 
     metadata = JsonableMetadata(
         name=_args.name, source_port=_args.source_port,
-        destination_port=_args.destination_port, destination_ip=_args.destination_ip, protocol=_args.protocol
+        destination_port=_args.destination_port, destination_ip=_args.destination_ip, protocol=_args.protocol.value
     )
     return HEADER.format(json_string=dumps(asdict(metadata))) + _rules + END
 
