@@ -11,7 +11,7 @@ from . import JsonableMetadata, Protocols
 
 def generate_iptables_rules(_args: argparse.Namespace) -> str:
     _rules = FORWARD_TEMPLATE.format(
-        protocol=_args.protocol,
+        protocol=_args.protocol.value,
         source_port=_args.source_port,
         destination_port=_args.destination_port,
         destination_ip=_args.destination_ip,
@@ -31,7 +31,7 @@ def write_iptables_rules(_rules: str, iptables_file: Path):
             fp.write(_rules)
             fp.write('\n')
     except PermissionError as e:
-        print(f'permission denied / 写入失败: {e}')
+        print(f'写入失败 / permission denied: {e}')
         raise
 
 

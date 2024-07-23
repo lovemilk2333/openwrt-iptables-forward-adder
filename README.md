@@ -31,7 +31,7 @@ python -m openwrt_iptables_forward_adder.adder -s 8000 -d 9000 -i 192.168.1.100 
 ```shell
 python -m openwrt_iptables_forward_adder.editor -b list
 ```
-示例返回:
+示例输出:
 ```text
                                                                                                                                                                      
   名称 / Name    唯一标识符 / ID    源端口 / Source port   目标地址:端口 / Destination ip:port   协议 / Protocol   创建时间 (本地时间) / Create at (use local time) 
